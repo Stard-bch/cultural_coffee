@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Add a new post</h1>
+    {{ form_start(form) }}
+        {{ form_widget(form.description_post) }}
+        {{ form_widget(form.image) }}
+        <button type="submit" class="btn btn-primary">publier</button>
+    {{ form_end(form) }}
+{% endblock %}

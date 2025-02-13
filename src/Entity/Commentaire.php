@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\CommentaireRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: CommentaireRepository::class)]
 class Commentaire
@@ -22,11 +24,22 @@ class Commentaire
 
     #[ORM\Column(nullable: true)]
     private ?int $nbrLike_commentaire = null;
-
+        
    
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
     private ?Post $post = null;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'commentaires')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    #[ORM\OneToMany(mappedBy: 'commentaire', targetEntity: Liked::class, cascade: ['persist', 'remove'])]
+    private Collection $likes;
+
+    public function __construct()
+    {
+        $this->likes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -77,6 +90,48 @@ class Commentaire
     public function setPost(?Post $post): static
     {
         $this->post = $post;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Liked>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Liked $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setCommentaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Liked $like): self
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getCommentaire() === $this) {
+                $like->setCommentaire(null);
+            }
+        }
 
         return $this;
     }

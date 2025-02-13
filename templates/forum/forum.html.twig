@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+  
+{% endblock %}
 
 {% block body %}
-
 <body>
   	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
@@ -47,97 +49,50 @@
 
     <section class="ftco-section">
       <div class="container">
-        <div class="row d-flex">
+        <div class="row justify-content-center mt-5">
+          <div class="col-md-6">
+            {% if form is defined %}
+            <div class="card">
+              <div class="card-body">
+                {{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
+                <div class="form-group">
+                  {{ form_widget(form.description_post, {'attr': {'class': 'form-control', 'placeholder':'Avez-vous des pensées?'}}) }}
+                </div>
+                <div class="form-group">
+                  {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group text-center">
+                  <button type="submit" class="btn btn-primary">Publier</button>
+                </div>
+                {{ form_end(form) }}
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="row d-flex mt-5">
+          {% for post in posts %}
           <div class="col-md-4 d-flex ftco-animate">
-          	<div class="blog-entry align-self-stretch">
-              <a href="blog-single.html" class="block-20" style="background-image: url('assets/front/images/image_1.jpg');">
+          	<div class="blog-entry align-self-stretch" style="opacity: 0.8;">
+              <a href="blog-single.html" class="block-20" style="background-image: url('{{ asset('uploads/images/' ~ post.image) }}');">
               </a>
               <div class="text py-4 d-block">
               	<div class="meta">
-                  <div><a href="#">Sept 28, 2018</a></div>
+                  <div><a href="#">{{ post.datePost|date('M d, Y') }}</a></div>
                   <div><a href="#">Admin</a></div>
                   <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
                 </div>
-                <h3 class="heading mt-2"><a href="#">Coffee Testing Day</a></h3>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                <h3 class="heading mt-2"><a href="#">{{ post.descriptionPost }}</a></h3>
+                <p>
+                    <a href="{{ path('post_like', {'id': post.id}) }}" class="like-button" data-id="{{ post.id }}">
+                        <span class="icon-heart" data-id="{{ post.id }}"></span>
+                    </a>
+                    {{ post.nbrLikes }} likes
+                </p>
               </div>
             </div>
           </div>
-          <div class="col-md-4 d-flex ftco-animate">
-          	<div class="blog-entry align-self-stretch">
-              <a href="blog-single.html" class="block-20" style="background-image: url('assets/front/images/image_2.jpg');">
-              </a>
-              <div class="text py-4 d-block">
-              	<div class="meta">
-                  <div><a href="#">Sept 28, 2018</a></div>
-                  <div><a href="#">Admin</a></div>
-                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                </div>
-                <h3 class="heading mt-2"><a href="#">Coffee Testing Day</a></h3>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 d-flex ftco-animate">
-          	<div class="blog-entry align-self-stretch">
-              <a href="blog-single.html" class="block-20" style="background-image: url('assets/front/images/image_3.jpg');">
-              </a>
-              <div class="text py-4 d-block">
-              	<div class="meta">
-                  <div><a href="#">Sept 28, 2018</a></div>
-                  <div><a href="#">Admin</a></div>
-                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                </div>
-                <h3 class="heading mt-2"><a href="#">Coffee Testing Day</a></h3>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 d-flex ftco-animate">
-          	<div class="blog-entry align-self-stretch">
-              <a href="blog-single.html" class="block-20" style="background-image: url('assets/front/images/image_4.jpg');">
-              </a>
-              <div class="text py-4 d-block">
-              	<div class="meta">
-                  <div><a href="#">Sept 28, 2018</a></div>
-                  <div><a href="#">Admin</a></div>
-                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                </div>
-                <h3 class="heading mt-2"><a href="#">Coffee Testing Day</a></h3>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 d-flex ftco-animate">
-          	<div class="blog-entry align-self-stretch">
-              <a href="blog-single.html" class="block-20" style="background-image: url('assets/front/images/image_5.jpg');">
-              </a>
-              <div class="text py-4 d-block">
-              	<div class="meta">
-                  <div><a href="#">Sept 28, 2018</a></div>
-                  <div><a href="#">Admin</a></div>
-                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                </div>
-                <h3 class="heading mt-2"><a href="#">Coffee Testing Day</a></h3>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 d-flex ftco-animate">
-          	<div class="blog-entry align-self-stretch">
-              <a href="blog-single.html" class="block-20" style="background-image: url('assets/front/images/image_6.jpg');">
-              </a>
-              <div class="text py-4 d-block">
-              	<div class="meta">
-                  <div><a href="#">Sept 28, 2018</a></div>
-                  <div><a href="#">Admin</a></div>
-                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                </div>
-                <h3 class="heading mt-2"><a href="#">Coffee Testing Day</a></h3>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-              </div>
-            </div>
-          </div>
+          {% endfor %}
         </div>
         <div class="row mt-5">
           <div class="col text-center">
@@ -234,4 +189,44 @@
       </div>
     </footer>
     
+{% endblock %}
+{% block javascripts %}
+  
+    {{ parent() }}
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".icon-heart").forEach(icon => {
+        icon.addEventListener("click", function (event) {
+            event.preventDefault();
+            let postId = this.getAttribute("data-id");
+            console.log(`Liking post with ID: ${postId}`);
+
+            fetch(`/post/like/${postId}`, {
+                method: "POST",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(`Response data: ${JSON.stringify(data)}`);
+                // Supprimer la gestion du like
+                // if (data.liked) {
+                //     this.classList.add("liked");
+                // } else {
+                //     this.classList.remove("liked");
+                // }
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        });
+    });
+});
+    </script>
 {% endblock %}

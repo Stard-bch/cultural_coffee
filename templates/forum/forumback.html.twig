@@ -1,5 +1,3 @@
-
-
 {% block css %}
    <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -31,7 +29,7 @@
 {% block body %}
 
 
-<body class="bg-theme bg-theme1">
+<body class="bg-theme bg-theme77">
 
 <!-- start loader -->
    <div id="pageloader-overlay" class="visible incoming"><div class="loader-wrapper-outer"><div class="loader-wrapper-inner" ><div class="loader"></div></div></div></div>
@@ -266,6 +264,17 @@
       </div>
     </div><!--End Row-->
 
+    <div class="post">
+        <p>{{ post.description_post }}</p>
+        <img src="{{ asset('uploads/images/' ~ post.image) }}" alt="Post Image">
+        <div>
+            <a href="{{ path('post_like', {'id': post.id}) }}">
+                <i class="fa fa-heart{% if post.liked %} text-danger{% endif %}"></i>
+            </a>
+            <span>{{ post.nbr_likes }}</span>
+        </div>
+    </div>
+
 	<!--start overlay-->
 		  <div class="overlay toggle-menu"></div>
 		<!--end overlay-->
@@ -312,6 +321,9 @@
   <!-- sidebar-menu js -->
   <script src="assets/back/js/sidebar-menu.js"></script>
   
+
   <!-- Custom scripts -->
-  <script src="as
+  <script src="as 
+
+  
 {% endblock %}

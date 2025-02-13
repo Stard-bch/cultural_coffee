@@ -38,7 +38,7 @@ class Evenement
          /**
      * @var Collection<int, Reservation>
      */
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'Evenement')]
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'evenement')]
     private Collection $reservations;
 
 
