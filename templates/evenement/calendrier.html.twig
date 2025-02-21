@@ -101,6 +101,12 @@
           <i class="zmdi zmdi-lock"></i> <span>Login</span>
         </a>
       </li>
+
+      <li class="sidebar-header">LABELS</li>
+      <li><a href="javaScript:void();"><i class="zmdi zmdi-coffee text-danger"></i> <span>Important</span></a></li>
+      <li><a href="javaScript:void();"><i class="zmdi zmdi-chart-donut text-success"></i> <span>Warning</span></a></li>
+      <li><a href="javaScript:void();"><i class="zmdi zmdi-share text-info"></i> <span>Information</span></a></li>
+
     </ul>
    
    </div>
@@ -131,6 +137,15 @@
     <li class="nav-item dropdown-lg">
       <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown" href="javascript:void();">
       <i class="fa fa-bell-o"></i></a>
+    </li>
+    <li class="nav-item language">
+      <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown" href="javascript:void();"><i class="fa fa-flag"></i></a>
+      <ul class="dropdown-menu dropdown-menu-right">
+          <li class="dropdown-item"> <i class="flag-icon flag-icon-gb mr-2"></i> English</li>
+          <li class="dropdown-item"> <i class="flag-icon flag-icon-fr mr-2"></i> French</li>
+          <li class="dropdown-item"> <i class="flag-icon flag-icon-cn mr-2"></i> Chinese</li>
+          <li class="dropdown-item"> <i class="flag-icon flag-icon-de mr-2"></i> German</li>
+        </ul>
     </li>
     <li class="nav-item">
       <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
@@ -170,111 +185,45 @@
 
 
 
-<div class="clearfix"></div>
 
 <div class="content-wrapper">
-    <div class="container-fluid">
-        <div class="row mt-3">
-            <!-- Contenu principal -->
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="card-title m-0" style="font-size: 1.5em;">Les Réservations</h4>
-                            
-                        </div>
-
-                        <!-- Tableau des réservations -->
-                        <div class="table-responsive"> <!-- Add this wrapper for horizontal scrolling -->
-                            <table class="table table-hover table-bordered">
-                                <thead class="text-white" style="
-                                    font-size: 1.5em; 
-                                    background-color: #8B5E3C; 
-                                    border-radius: 12px; 
-                                    font-weight: bold; 
-                                    color: #fff; 
-                                    text-align: center; 
-                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-                                    border: 2px solid #6B3F2D;">
-                                    <tr>
-                                        <th>Réservation ID</th>
-                                        <th>Nom Utilisateur</th>
-                                        <th>Événement Réservé</th>
-                                        <th>Nombre de Places</th>
-                                        <th>Statut</th>
-                                        <th>Moyen de Paiement</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for reservation in reservations %}
-                                        <tr>
-                                            <td>{{ reservation.id }}</td>
-                                            <td>
-                                                {% if reservation.user %}
-                                                    {{ reservation.user.nomUser }} {{ reservation.user.prenomUser }}
-                                                {% else %}
-                                                    N/A
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if reservation.evenement %}
-                                                    {{ reservation.evenement.titreEvenement }}
-                                                {% else %}
-                                                    N/A
-                                                {% endif %}
-                                            </td>
-                                            <td>{{ reservation.nbrPlaces }}</td>
-                                            <td>
-                                                {% if reservation.statutBooking == 'Confirmé' %}
-                                                    <span class="badge badge-success">Confirmé</span>
-                                                {% elseif reservation.statutBooking == 'En attente' %}
-                                                    <span class="badge badge-warning">En attente</span>
-                                                {% elseif reservation.statutBooking == 'Annulé' %}
-                                                    <span class="badge badge-danger">Annulé</span>
-                                                {% else %}
-                                                    <span class="badge badge-secondary">{{ reservation.statutBooking }}</span>
-                                                {% endif %}
-                                            </td>
-                                            <td>{{ reservation.moyenPayementBooking }}</td>
-                                            <td>
-                                                       <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}" class="btn btn-light">
-                                                    <i class="icon-eye"></i> Détails
-                                                </a>
-                                                <a href="{{ path('app_reservation_delete', {'id': reservation.id}) }}" class="btn btn-light">
-                                                    <i class="icon-trash"></i> Annuler
-                                                </a>
-                                     
-                                            </td>
-                                        </tr>
-                                    {% else %}
-                                        <tr>
-                                            <td colspan="7" class="text-center">Aucune réservation trouvée</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div> <!-- End of table-responsive -->
-                        <hr>
-                    </div>
-                </div>
-            </div>
+  <div class="container-fluid">
+    <!-- Calendar Section -->
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div id='calendar'></div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
-<!-- Back To Top Button -->
-<a href="javascript:void(0);" class="back-to-top"><i class="fa fa-angle-double-up"></i></a>
+<!--Start Back To Top Button-->
+<a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
 {% endblock %}
 
+
+
 {% block js %}
+
+  <!-- Bootstrap core JavaScript-->
   <script src="{{ asset('assets/back/js/jquery.min.js') }}"></script>
   <script src="{{ asset('assets/back/js/popper.min.js') }}"></script>
   <script src="{{ asset('assets/back/js/bootstrap.min.js') }}"></script>
+  
+  <!-- simplebar js -->
   <script src="{{ asset('assets/back/plugins/simplebar/js/simplebar.js') }}"></script>
+  
+  <!-- sidebar-menu js -->
   <script src="{{ asset('assets/back/js/sidebar-menu.js') }}"></script>
+  
+  <!-- Custom scripts -->
   <script src="{{ asset('assets/back/js/app-script.js') }}"></script>
+  
+  <!-- Full Calendar -->
   <script src="{{ asset('assets/back/plugins/fullcalendar/js/moment.min.js') }}"></script>
   <script src="{{ asset('assets/back/plugins/fullcalendar/js/fullcalendar.min.js') }}"></script>
   <script src="{{ asset('assets/back/plugins/fullcalendar/js/fullcalendar-custom-script.js') }}"></script>
+  
 {% endblock %}

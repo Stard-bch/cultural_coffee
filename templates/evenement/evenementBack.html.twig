@@ -1,5 +1,4 @@
-
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 {% block css %}
    <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -11,7 +10,7 @@
   <link href="assets/back/css/pace.min.css" rel="stylesheet"/>
   <script src="assets/back/js/pace.min.js"></script>
   <!--favicon-->
-  <link rel="icon" href="assets/back/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{{ asset('assets/back/images/coffeeshop_favicon.ico') }}" type="image/x-icon">
   <!-- simplebar CSS-->
   <link href="assets/back/plugins/simplebar/css/simplebar.css" rel="stylesheet"/>
   <!-- Bootstrap core CSS-->
@@ -24,6 +23,7 @@
   <link href="assets/back/css/sidebar-menu.css" rel="stylesheet"/>
   <!-- Custom Style-->
   <link href="assets/back/css/app-style.css" rel="stylesheet"/>
+
   
 {% endblock %}
 
@@ -54,60 +54,42 @@
           <i class="zmdi zmdi-view-dashboard"></i> <span>Dashboard</span>
         </a>
       </li>
-
       <li>
         <a href="rencontreBack">
           <i class="zmdi zmdi-invert-colors"></i> <span>Rencontres</span>
         </a>
       </li>
-
       <li>
         <a href="forumback">
           <i class="zmdi zmdi-format-list-bulleted"></i> <span>Forum</span>
         </a>
       </li>
-
       <li>
         <a href="produitBack">
           <i class="zmdi zmdi-grid"></i> <span>Produits</span>
         </a>
       </li>
-
       <li>
         <a href="commandeBack">
           <i class="zmdi zmdi-face"></i> <span>Commandes</span>
         </a>
       </li>
-
-
-
       <li>
         <a href="reservationBack">
           <i class="zmdi zmdi-calendar-check"></i> <span>Reservation</span>
-          <small class="badge float-right badge-light">New</small>
         </a>
       </li>
-
-
       <li>
         <a href="evenementBack">
           <i class="zmdi zmdi-face"></i> <span>Evenement</span>
         </a>
       </li>
-
       <li>
         <a href="loginback" target="_blank">
           <i class="zmdi zmdi-lock"></i> <span>Login</span>
         </a>
       </li>
-	  
-      <li class="sidebar-header">LABELS</li>
-      <li><a href="javaScript:void();"><i class="zmdi zmdi-coffee text-danger"></i> <span>Important</span></a></li>
-      <li><a href="javaScript:void();"><i class="zmdi zmdi-chart-donut text-success"></i> <span>Warning</span></a></li>
-      <li><a href="javaScript:void();"><i class="zmdi zmdi-share text-info"></i> <span>Information</span></a></li>
-
-    </ul>
-   
+    </ul>   
    </div>
    <!--End sidebar-wrapper-->
 
@@ -136,15 +118,6 @@
     <li class="nav-item dropdown-lg">
       <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown" href="javascript:void();">
       <i class="fa fa-bell-o"></i></a>
-    </li>
-    <li class="nav-item language">
-      <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown" href="javascript:void();"><i class="fa fa-flag"></i></a>
-      <ul class="dropdown-menu dropdown-menu-right">
-          <li class="dropdown-item"> <i class="flag-icon flag-icon-gb mr-2"></i> English</li>
-          <li class="dropdown-item"> <i class="flag-icon flag-icon-fr mr-2"></i> French</li>
-          <li class="dropdown-item"> <i class="flag-icon flag-icon-cn mr-2"></i> Chinese</li>
-          <li class="dropdown-item"> <i class="flag-icon flag-icon-de mr-2"></i> German</li>
-        </ul>
     </li>
     <li class="nav-item">
       <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
@@ -177,316 +150,90 @@
 </header>
 <!--End topbar header-->
 
+
+
+
+
+
 <div class="clearfix"></div>
-	
-  <div class="content-wrapper">
+
+<div class="content-wrapper">
     <div class="container-fluid">
+        <div class="row mt-3">
+            <!-- Bouton "Consulter calendrier" aligné à droite -->
+ <div class="col-12 d-flex justify-content-end mb-3">
+    <a href="{{ path('calendrierEvenement') }}" class="btn btn-light px-5">
+        <i class="fas fa-calendar-alt mr-2" style="font-size: 1em; background-color: #8B5E3C; border-radius: 12px;"></i> Consulter calendrier
+    </a>
+</div>
 
-      <div class="row mt-3">
-        <div class="col-lg-4">
-           <div class="card profile-card-2">
-            <div class="card-img-block">
-                <img class="img-fluid" src="https://via.placeholder.com/800x500" alt="Card image cap">
-            </div>
-            <div class="card-body pt-5">
-                <img src="https://via.placeholder.com/110x110" alt="profile-image" class="profile">
-                <h5 class="card-title">Mark Stern</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <div class="icon-block">
-                  <a href="javascript:void();"><i class="fa fa-facebook bg-facebook text-white"></i></a>
-				  <a href="javascript:void();"> <i class="fa fa-twitter bg-twitter text-white"></i></a>
-				  <a href="javascript:void();"> <i class="fa fa-google-plus bg-google-plus text-white"></i></a>
-                </div>
-            </div>
+            <!-- Contenu principal -->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="card-title m-0" style="font-size: 1.5em;">Les Événements</h4>
+                            <a href="{{ path('app_evenement_back_new') }}" class="btn btn-light px-5">
+                                <i class="icon-plus mr-2" style="font-size: 1em; background-color: #8B5E3C; border-radius: 12px;"></i> Ajouter un événement
+                            </a>
+                        </div>
 
-            <div class="card-body border-top border-light">
-                 <div class="media align-items-center">
-                   <div>
-                       <img src="assets/back/images/timeline/html5.svg" class="skill-img" alt="skill img">
-                   </div>
-                     <div class="media-body text-left ml-3">
-                       <div class="progress-wrapper">
-                         <p>HTML5 <span class="float-right">65%</span></p>
-                         <div class="progress" style="height: 5px;">
-                          <div class="progress-bar" style="width:65%"></div>
-                         </div>
-                        </div>                   
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="media align-items-center">
-                   <div><img src="assets/back/images/timeline/bootstrap-4.svg" class="skill-img" alt="skill img"></div>
-                     <div class="media-body text-left ml-3">
-                       <div class="progress-wrapper">
-                         <p>Bootstrap 4 <span class="float-right">50%</span></p>
-                         <div class="progress" style="height: 5px;">
-                          <div class="progress-bar" style="width:50%"></div>
-                         </div>
-                        </div>                   
-                    </div>
-                  </div>
-                   <hr>
-                  <div class="media align-items-center">
-                   <div><img src="assets/back/images/timeline/angular-icon.svg" class="skill-img" alt="skill img"></div>
-                     <div class="media-body text-left ml-3">
-                       <div class="progress-wrapper">
-                         <p>AngularJS <span class="float-right">70%</span></p>
-                         <div class="progress" style="height: 5px;">
-                          <div class="progress-bar" style="width:70%"></div>
-                         </div>
-                        </div>                   
-                    </div>
-                  </div>
-                    <hr>
-                  <div class="media align-items-center">
-                   <div><img src="assets/back/images/timeline/react.svg" class="skill-img" alt="skill img"></div>
-                     <div class="media-body text-left ml-3">
-                       <div class="progress-wrapper">
-                         <p>React JS <span class="float-right">35%</span></p>
-                         <div class="progress" style="height: 5px;">
-                          <div class="progress-bar" style="width:35%"></div>
-                         </div>
-                        </div>                   
-                    </div>
-                  </div>
-                  
-              </div>
-        </div>
-
-        </div>
-
-        <div class="col-lg-8">
-           <div class="card">
-            <div class="card-body">
-            <ul class="nav nav-tabs nav-tabs-primary top-icon nav-justified">
-                <li class="nav-item">
-                    <a href="javascript:void();" data-target="#profile" data-toggle="pill" class="nav-link active"><i class="icon-user"></i> <span class="hidden-xs">Profile</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="javascript:void();" data-target="#messages" data-toggle="pill" class="nav-link"><i class="icon-envelope-open"></i> <span class="hidden-xs">Messages</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="javascript:void();" data-target="#edit" data-toggle="pill" class="nav-link"><i class="icon-note"></i> <span class="hidden-xs">Edit</span></a>
-                </li>
-            </ul>
-            <div class="tab-content p-3">
-                <div class="tab-pane active" id="profile">
-                    <h5 class="mb-3">User Profile</h5>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6>About</h6>
-                            <p>
-                                Web Designer, UI/UX Engineer
-                            </p>
-                            <h6>Hobbies</h6>
-                            <p>
-                                Indie music, skiing and hiking. I love the great outdoors.
-                            </p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Recent badges</h6>
-                            <a href="javascript:void();" class="badge badge-dark badge-pill">html5</a>
-                            <a href="javascript:void();" class="badge badge-dark badge-pill">react</a>
-                            <a href="javascript:void();" class="badge badge-dark badge-pill">codeply</a>
-                            <a href="javascript:void();" class="badge badge-dark badge-pill">angularjs</a>
-                            <a href="javascript:void();" class="badge badge-dark badge-pill">css3</a>
-                            <a href="javascript:void();" class="badge badge-dark badge-pill">jquery</a>
-                            <a href="javascript:void();" class="badge badge-dark badge-pill">bootstrap</a>
-                            <a href="javascript:void();" class="badge badge-dark badge-pill">responsive-design</a>
-                            <hr>
-                            <span class="badge badge-primary"><i class="fa fa-user"></i> 900 Followers</span>
-                            <span class="badge badge-success"><i class="fa fa-cog"></i> 43 Forks</span>
-                            <span class="badge badge-danger"><i class="fa fa-eye"></i> 245 Views</span>
-                        </div>
-                        <div class="col-md-12">
-                            <h5 class="mt-2 mb-3"><span class="fa fa-clock-o ion-clock float-right"></span> Recent Activity</h5>
-                             <div class="table-responsive">
-                            <table class="table table-hover table-striped">
-                                <tbody>                                    
+                        <!-- Tableau des événements -->
+  <table class="table table-hover table-bordered">
+  <thead class="text-white" style="
+    font-size: 1.5em; 
+    background-color: #8B5E3C; 
+    border-radius: 12px; 
+    font-weight: bold; 
+    color: #fff; 
+    text-align: center; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    border: 2px solid #6B3F2D;">
+    <!-- Table headers here -->
+  </thead>                                <tr>
+                                    <th>Titre</th>
+                                    <th>Description</th>
+                                    <th>Date</th>
+                                    <th>Prix</th>
+                                    <th>Type</th>
+                                    <th>Capacité</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for evenement in evenements %}
                                     <tr>
+                                        <td>{{ evenement.titreEvenement }}</td>
+<td>
+    <span data-toggle="tooltip" title="{{ evenement.descriptionEvent }}">
+        {{ evenement.descriptionEvent|slice(0, 30) ~ (evenement.descriptionEvent|length > 30 ? '...' : '') }}
+    </span>
+</td>                                        <td>{{ evenement.dateEvent ? evenement.dateEvent|date('Y-m-d') : '' }}</td>
+                                        <td>{{ evenement.prixEvent }}</td>
+                                        <td>{{ evenement.typeEvent }}</td>
+                                        <td>{{ evenement.capaciteMax }}</td>
                                         <td>
-                                            <strong>Abby</strong> joined ACME Project Team in <strong>`Collaboration`</strong>
+                                            <a href="{{ path('app_evenement_back_show', {'id': evenement.id}) }}" class="btn btn-light"  ><i class="icon-eye" ></i></a>
+                                            <a href="{{ path('app_evenement_back_edit', {'id': evenement.id}) }}" class="btn btn-light "><i class="icon-pencil"></i> </a>
+                                            <a href="{{ path('app_evenement_back_delete', {'id': evenement.id}) }}" class="btn btn-light" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet événement?')"><i class="icon-trash"></i></a>
                                         </td>
                                     </tr>
+                                {% else %}
                                     <tr>
-                                        <td>
-                                            <strong>Gary</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                                        </td>
+                                        <td colspan="7" class="text-center">Aucun événement trouvé</td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>Kensington</strong> deleted MyBoard3 in <strong>`Discussions`</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>John</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>Skell</strong> deleted his post Look at Why this is.. in <strong>`Discussions`</strong>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                          </div>
-                        </div>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <hr>
                     </div>
-                    <!--/row-->
-                </div>
-                <div class="tab-pane" id="messages">
-                    <div class="alert alert-info alert-dismissible" role="alert">
-				   <button type="button" class="close" data-dismiss="alert">&times;</button>
-				    <div class="alert-icon">
-					 <i class="icon-info"></i>
-				    </div>
-				    <div class="alert-message">
-				      <span><strong>Info!</strong> Lorem Ipsum is simply dummy text.</span>
-				    </div>
-                  </div>
-                  <div class="table-responsive">
-                    <table class="table table-hover table-striped">
-                        <tbody>                                    
-                            <tr>
-                                <td>
-                                   <span class="float-right font-weight-bold">3 hrs ago</span> Here is your a link to the latest summary report from the..
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                   <span class="float-right font-weight-bold">Yesterday</span> There has been a request on your account since that was..
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                   <span class="float-right font-weight-bold">9/10</span> Porttitor vitae ultrices quis, dapibus id dolor. Morbi venenatis lacinia rhoncus. 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                   <span class="float-right font-weight-bold">9/4</span> Vestibulum tincidunt ullamcorper eros eget luctus. 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                   <span class="float-right font-weight-bold">9/4</span> Maxamillion ais the fix for tibulum tincidunt ullamcorper eros. 
-                                </td>
-                            </tr>
-                        </tbody> 
-                    </table>
-                  </div>
-                </div>
-                <div class="tab-pane" id="edit">
-                    <form>
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label form-control-label">First name</label>
-                            <div class="col-lg-9">
-                                <input class="form-control" type="text" value="Mark">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label form-control-label">Last name</label>
-                            <div class="col-lg-9">
-                                <input class="form-control" type="text" value="Jhonsan">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label form-control-label">Email</label>
-                            <div class="col-lg-9">
-                                <input class="form-control" type="email" value="mark@example.com">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label form-control-label">Change profile</label>
-                            <div class="col-lg-9">
-                                <input class="form-control" type="file">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label form-control-label">Website</label>
-                            <div class="col-lg-9">
-                                <input class="form-control" type="url" value="">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label form-control-label">Address</label>
-                            <div class="col-lg-9">
-                                <input class="form-control" type="text" value="" placeholder="Street">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label form-control-label"></label>
-                            <div class="col-lg-6">
-                                <input class="form-control" type="text" value="" placeholder="City">
-                            </div>
-                            <div class="col-lg-3">
-                                <input class="form-control" type="text" value="" placeholder="State">
-                            </div>
-                        </div>
-                       
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label form-control-label">Username</label>
-                            <div class="col-lg-9">
-                                <input class="form-control" type="text" value="jhonsanmark">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label form-control-label">Password</label>
-                            <div class="col-lg-9">
-                                <input class="form-control" type="password" value="11111122333">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label form-control-label">Confirm password</label>
-                            <div class="col-lg-9">
-                                <input class="form-control" type="password" value="11111122333">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-form-label form-control-label"></label>
-                            <div class="col-lg-9">
-                                <input type="reset" class="btn btn-secondary" value="Cancel">
-                                <input type="button" class="btn btn-primary" value="Save Changes">
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
-      </div>
-      </div>
-        
     </div>
-
-	<!--start overlay-->
-		  <div class="overlay toggle-menu"></div>
-		<!--end overlay-->
-	
-    </div>
-    <!-- End container-fluid-->
-   </div><!--End content-wrapper-->
-   <!--Start Back To Top Button-->
-    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
-    <!--End Back To Top Button-->
-	
-	<!--Start footer-->
-	<footer class="footer">
-      <div class="container">
-        <div class="text-center">
-          Copyright © 2018 Dashtreme Admin
-        </div>
-      </div>
-    </footer>
-	<!--End footer-->
-	
-	<!--start color switcher-->
-   
-  <!--end color switcher-->
-   
-  </div><!--End wrapper-->
-
+</div>
 {% endblock %}
+
 
 
 
@@ -505,4 +252,49 @@
   
   <!-- Custom scripts -->
   <script src="assets/back/js/app-script.js"></script>
+
+  <script>
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+
+
+<!-- SweetAlert2 -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- Votre script JavaScript personnalisé -->
+        <script>
+            document.getElementById('delete-button').addEventListener('click', function() {
+                Swal.fire({
+                    title: 'Êtes-vous sûr ?',
+                    text: "Vous ne pourrez pas annuler cette action !",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Oui, supprimer !',
+                    cancelButtonText: 'Non, annuler'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Soumettre le formulaire de suppression
+                        document.getElementById('delete-form').submit();
+                        // Afficher un message de succès
+                        Swal.fire(
+                            'Supprimé !',
+                            'L\'événement a été supprimé.',
+                            'success'
+                        );
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        // Afficher un message d'annulation
+                        Swal.fire(
+                            'Annulé',
+                            'L\'événement n\'a pas été supprimé.',
+                            'error'
+                        );
+                    }
+                });
+            });
+        </script>
+
+
 {% endblock %}

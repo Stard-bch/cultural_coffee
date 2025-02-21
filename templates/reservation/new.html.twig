@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une Réservation{% endblock %}
+
+{% block body %}
+    <div class="container-fluid p-0">
+        <div class="row justify-content-center">
+            <!-- Main Form Content (Left Side) -->
+            <div class="col-xl-8">
+                <div class="step active">
+                    <form id="reservationForm" class="billing-form ftco-bg-dark p-3 p-md-5">
+                        <h3 class="mb-4 billing-heading">Créer une Réservation</h3>
+                        <div class="row align-items-end">
+                            <!-- Date de réservation -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.date_booking, 'Date de réservation') }}
+                                    {{ form_widget(form.date_booking, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.date_booking) }}
+                                </div>
+                            </div>
+                            
+                            <!-- Nombre de places -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.nbr_places, 'Nombre de places') }}
+                                    {{ form_widget(form.nbr_places, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.nbr_places) }}
+                                </div>
+                            </div>
+                            
+                            <div class="w-100"></div>
+
+                            <!-- Statut de la réservation -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.statut_booking, 'Statut de la réservation') }}
+                                    {{ form_widget(form.statut_booking, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.statut_booking) }}
+                                </div>
+                            </div>
+                            
+                            <!-- Moyen de paiement -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.moyenPayement_booking, 'Moyen de paiement') }}
+                                    {{ form_widget(form.moyenPayement_booking, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.moyenPayement_booking) }}
+                                </div>
+                            </div>
+                            
+                            <div class="w-100"></div>
+                            
+                            <!-- Événement -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.evenement, 'Événement choisi') }}
+                                    {{ form_widget(form.evenement, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.evenement) }}
+                                </div>
+                            </div>
+                            
+                            <!-- Utilisateur -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.user, 'Votre Email') }}
+                                    {{ form_widget(form.user, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_errors(form.user) }}
+                                </div>
+                            </div>
+
+                            <div class="w-100"></div>
+
+                            <!-- Bouton Enregistrer -->
+                            <div class="col-md-12 text-center mt-4">
+                                {{ form_widget(form.save, {'attr': {'class': 'btn', 'style': 'background-color: #c49b63; color: white;' }}) }}
+                            </div>
+
+                            <!-- Bouton Retour à la liste -->
+                            <div class="col-md-12 mt-3">
+                                <a href="{{ path('app_reservation_index') }}" class="btn btn-secondary">Retour à la liste</a>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

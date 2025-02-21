@@ -1,0 +1,156 @@
+{% block body %}
+<div class="details-container">
+    <div class="details-wrapper">
+        <h1>Consulter un Évenement</h1>
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Id événement</th>
+                    <td>{{ evenement.id }}</td>
+                </tr>
+                <tr>
+                    <th>Titre événement</th>
+                    <td>{{ evenement.titreEvenement }}</td>
+                </tr>
+                <tr>
+                    <th>Description de l'événement</th>
+                    <td>{{ evenement.descriptionEvent }}</td>
+                </tr>
+                <tr>
+                    <th>Date événement</th>
+                    <td>{{ evenement.dateEvent ? evenement.dateEvent|date('Y-m-d') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Prix événement</th>
+                    <td>{{ evenement.prixEvent }}</td>
+                </tr>
+                <tr>
+                    <th>Image événement</th>
+                    <td>{{ evenement.imageEvent }}</td>
+                </tr>
+                <tr>
+                    <th>Type événement</th>
+                    <td>{{ evenement.typeEvent }}</td>
+                </tr>
+                <tr>
+                    <th>Capacite maximale</th>
+                    <td>{{ evenement.capaciteMax }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_evenement_back_index') }}">Retour à la liste</a>
+        <a href="{{ path('app_evenement_back_edit', {'id': evenement.id}) }}">Modifier cet événement</a>
+
+        <!-- Include the delete form -->
+        <div class="delete-form">
+            {{ include('evenement/_delete_form.html.twig') }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<style>
+    /* Center the content on the page */
+    .details-container {
+        display: flex;
+        justify-content: center;
+        background-image: linear-gradient(45deg, #A88469, #957058);
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+        font-family: 'Arial', sans-serif;
+    }
+
+    /* Style the details wrapper */
+    .details-wrapper {
+        max-width: 700px;
+        width: 100%;
+        background: #dfc4a6;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+    }
+
+    /* Style the title */
+    .details-wrapper h1 {
+        font-size: 28px;
+        margin-bottom: 25px;
+        text-align: center;
+        color: #4A3A31;
+        font-weight: 600;
+    }
+
+    /* Style the table */
+    .details-wrapper table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+    }
+
+    .details-wrapper table th,
+    .details-wrapper table td {
+        padding: 15px;
+        border: 1px solid #ddd;
+        text-align: left;
+        font-size: 1em;
+    }
+
+    .details-wrapper table th {
+        background-color: #A88469;
+        color: white;
+        font-weight: bold;
+        font-size: 1em;
+        border:1px solid #ddd;
+    }
+
+    .details-wrapper table tr:nth-child(even) {
+        background-color: #f4f4f4;
+    }
+
+    .details-wrapper table tr:hover {
+        background-color: #e0e0e0;
+    }
+
+    /* Style the links */
+    .details-wrapper a {
+        display: inline-block;
+        margin-right: 15px;
+        padding: 10px 20px;
+        background-color: #8B4513;
+        color: #fff;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 1.1em;
+        transition: background-color 0.3s ease;
+    }
+
+    .details-wrapper a:hover {
+        background-color: #A0522D;
+    }
+
+    /* Style the delete form button */
+    .details-wrapper .delete-form {
+        text-align: right; 
+
+        display: inline-block;
+        margin-top: 15px;
+    }
+
+    .details-wrapper .delete-form button {
+        padding: 10px 20px;
+        background-color: #A0522D;
+        color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1em;
+        transition: background-color 0.3s ease;
+    }
+
+    .details-wrapper .delete-form button:hover {
+        background-color: #c82333;
+    }
+</style>

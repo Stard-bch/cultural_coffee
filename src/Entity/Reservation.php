@@ -14,10 +14,12 @@ class Reservation
     #[ORM\Column]
     private ?int $id = null;
 
- 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     private ?Evenement $evenement = null;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "reservations")]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_booking = null;
@@ -89,9 +91,23 @@ class Reservation
         return $this->evenement;
     }
 
+
+
     public function setEvenement(?Evenement $evenement): static
     {
         $this->evenement = $evenement;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

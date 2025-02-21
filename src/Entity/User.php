@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -41,12 +43,17 @@ class User
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateNaissance_user = null;
 
-         /**
-     * @var Collection<int, Commentaire>
-     */
-    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'User')]
+    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'user')]
     private Collection $messages;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reservation::class, cascade: ["remove"])]
+    private Collection $reservations;
+
+    public function __construct()
+    {
+        $this->messages = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -157,6 +164,36 @@ class User
     public function setDateNaissanceUser(\DateTimeInterface $dateNaissance_user): static
     {
         $this->dateNaissance_user = $dateNaissance_user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // Set the owning side to null (unless already changed)
+            if ($reservation->getUser() === $this) {
+                $reservation->setUser(null);
+            }
+        }
 
         return $this;
     }

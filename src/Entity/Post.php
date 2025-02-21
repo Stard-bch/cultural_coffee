@@ -29,7 +29,7 @@ class Post
         /**
      * @var Collection<int, Commentaire>
      */
-    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'Post')]
+    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'post')]
     private Collection $commentaires;
 
 
