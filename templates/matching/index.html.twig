@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Matching index{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/front/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/front/css/chat.css') }}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Matchings</h1>
+        <ul>
+            {% for matching in matchings %}
+                <li>{{ matching.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

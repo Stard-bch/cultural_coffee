@@ -10,8 +10,11 @@ class Message
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: "integer")]
     private ?int $id = null;
+
+    #[ORM\Column(type: "text")]
+    private ?string $content = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
     private ?Matching $matching = null;
@@ -25,9 +28,24 @@ class Message
     #[ORM\Column(length: 255)]
     private ?string $contenu_message = null;
 
+    #[ORM\Column(type: "datetime")]
+    private ?\DateTimeInterface $createdAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(string $content): self
+    {
+        $this->content = $content;
+
+        return $this;
     }
 
     public function isUpdatedMessage(): ?bool
@@ -74,6 +92,18 @@ class Message
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

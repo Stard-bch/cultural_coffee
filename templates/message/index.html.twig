@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Message index{% endblock %}
+
+{% block body %}
+    <h1>Message index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Contenu Message</th>
+                <th>Updated Message</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for message in messages %}
+            <tr>
+                <td>{{ message.id }}</td>
+                <td>{{ message.contenuMessage }}</td>
+                <td>{{ message.updatedMessage ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('message_show', {'id': message.id}) }}">show</a>
+                    <a href="{{ path('message_edit', {'id': message.id}) }}">edit</a>
+                    <form method="post" action="{{ path('message_delete', {'id': message.id}) }}" style="display:inline-block;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ message.id) }}">
+                        <button class="btn btn-danger">delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('message_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Matching{% endblock %}
+
+{% block body %}
+    <h1>Edit Matching</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('matching_index') }}">back to list</a>
+
+    <form method="post" action="{{ path('matching_delete', {'id': matching.id}) }}" style="display:inline-block;">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ matching.id) }}">
+        <button class="btn btn-danger">delete</button>
+    </form>
+{% endblock %}

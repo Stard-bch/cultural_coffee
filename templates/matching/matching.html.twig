@@ -1,0 +1,497 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/front/css/chat.css') }}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <style>
+        .chat-history {
+            height: 400px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        .chat-message input {
+            border-radius: 20px;
+            padding: 10px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            border-radius: 20px;
+        }
+        .modal-content {
+            background-color: #222;
+            color: white;
+            border-radius: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="home">Rendez-Vous<small>Culture</small></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
+            </button>
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a href="home" class="nav-link">Acceuil</a></li>
+                    <li class="nav-item"><a href="rencontre" class="nav-link">Rencontres</a></li>
+                    <li class="nav-item"><a href="indexService" class="nav-link">Services</a></li>
+                    <li class="nav-item"><a href="evenement" class="nav-link">Événements</a></li>
+                    <li class="nav-item"><a href="forum" class="nav-link">Forum</a></li>
+                    <li class="nav-item"><a href="produit" class="nav-link">Boutique</a></li>
+                    <li class="nav-item"><a href="contact" class="nav-link">Contact</a></li>
+                    <li class="nav-item cart"><a href="cart" class="nav-link"><span class="icon icon-shopping_cart"></span><span class="bag d-flex justify-content-center align-items-center"><small>1</small></span></a></li>
+                    <li class="nav-item"><a href="login" class="nav-link">Connexion</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- END nav -->
+    <section class="home-slider owl-carousel">
+        <div class="slider-item" style="background-image: url(assets/front/images/bg_3.jpg);" data-stellar-background-ratio="0.5">
+            <div class="overlay"></div>
+            <div class="container">
+                <div class="row slider-text justify-content-center align-items-center">
+                    <div class="col-md-7 col-sm-12 text-center ftco-animate">
+                        <h1 class="mb-3 mt-5 bread">Rencontre</h1>
+                        <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Rencontre</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-lg-12">
+                <div class="card chat-app">
+                    <!-- Liste des Rencontres (Côté Gauche) -->
+                    <div id="plist" class="people-list">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-search"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Search...">
+                        </div>
+                        <button class="btn btn-primary mt-3" data-toggle="modal" data-target="#addMatchingModal">Add Matching</button>
+
+                        <ul class="list-unstyled chat-list mt-2 mb-0">
+                            {% for rencontre in rencontres %}
+                                <li class="clearfix rencontre-item" data-id="{{ rencontre.id }}">
+                                    <img src="{{ rencontre.image }}" alt="avatar">  <!-- Image stockée en string -->
+                                    <div class="about">
+                                        <div class="name">{{ rencontre.name }}</div>
+                                        <div class="status">
+                                            <div class="subject">{{ rencontre.sujetRencontre }}</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <!-- Zone de Chat et Détails (Côté Droit) -->
+                    <div class="chat">
+                        <!-- Chat Header -->
+                        <div class="chat-header clearfix">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                                        <img id="chat-avatar" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
+                                    </a>
+                                    <div class="chat-about">
+                                        <h6 id="chat-name" class="m-b-0">Sélectionnez une rencontre</h6>
+                                        <small id="chat-last-seen">---</small>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 hidden-sm text-right">
+                                    <button type="button" class="btn btn-outline-info" id="edit-matching-btn" data-toggle="modal" data-target="#editMatchingModal"><i class="fa fa-cogs"></i></button>
+                                    <a href="javascript:void(0);" class="btn btn-outline-warning"><i class="fa fa-question"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat History -->
+                        <div class="chat-history">
+                            <ul class="m-b-0" id="chat-messages">
+                                <li class="text-center">Cliquez sur une rencontre pour voir les messages.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Chat Input -->
+                        <div class="chat-message clearfix">
+                            <div class="input-group mb-0">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-send"></i></span>
+                                </div>
+                                <input type="text" class="form-control" id="message-input" placeholder="Enter text here...">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" id="send-message-btn">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Matching Modal -->
+    <div class="modal fade" id="addMatchingModal" tabindex="-1" role="dialog" aria-labelledby="addMatchingModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addMatchingModalLabel">Add Matching</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addMatchingForm">
+                        <div class="form-group">
+                            <label for="matchingName">Name</label>
+                            <input type="text" class="form-control" id="matchingName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="matchingSubject">Subject</label>
+                            <select class="form-control" id="matchingSubject" required>
+                                <option value="Subject 1">Subject 1</option>
+                                <option value="Subject 2">Subject 2</option>
+                                <option value="Subject 3">Subject 3</option>
+                                <option value="Subject 4">Subject 4</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="matchingNbrPersonne">Number of People</label>
+                            <input type="number" class="form-control" id="matchingNbrPersonne" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="matchingImage">Image URL</label>
+                            <input type="text" class="form-control" id="matchingImage" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="matchingNumTable">Table Number</label>
+                            <input type="number" class="form-control" id="matchingNumTable" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveMatchingBtn">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Matching Modal -->
+    <div class="modal fade" id="editMatchingModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Matching</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="editMatchingForm">
+          
+           
+
+          <div class="form-group">
+            <label for="editName">Name</label>
+            <input type="text" class="form-control" id="editName" required>
+          </div>
+          <div class="form-group">
+            <label for="editSujet">Subject</label>
+            <input type="text" class="form-control" id="editSujet" required>
+          </div>
+          <div class="form-group">
+            <label for="editNumTable">Table Number</label>
+            <input type="number" class="form-control" id="editNumTable" required>
+          </div>
+          <div class="form-group">
+            <label for="editImage">Upload Image</label>
+            <input type="file" class="form-control-file" id="editImage">
+          </div>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Script JavaScript pour Charger les Messages Dynamique -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let selectedRencontreId = null;
+        let editingMessageId = null;
+        const userId = 1; // Assuming user ID 1 for testing
+
+        // Add click event listeners to all rencontre items
+        document.querySelectorAll('.rencontre-item').forEach(item => {
+            item.addEventListener('click', function () {
+                selectedRencontreId = this.getAttribute('data-id');
+
+                // Update chat header information
+                const name = this.querySelector(".name").textContent;
+                const subject = this.querySelector(".subject").textContent;
+                const avatar = this.querySelector("img").src;
+
+                document.getElementById("chat-name").textContent = name;
+                document.getElementById("chat-last-seen").textContent = subject;
+                document.getElementById("chat-avatar").src = avatar;
+
+                // Fetch messages for the selected rencontre
+                fetch(`/message/messages/${selectedRencontreId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const messagesContainer = document.getElementById('chat-messages');
+                        messagesContainer.innerHTML = ''; // Clear existing messages
+
+                        if (data.length > 0) {
+                            data.forEach(msg => {
+                                const messageElement = document.createElement('li');
+                                messageElement.classList.add('clearfix');
+
+                                // Check if the message was sent by the current user
+                                if (msg.envoye) {
+                                    messageElement.innerHTML = `
+                                        <div class="message-data text-right">
+                                            <span class="message-data-time">${msg.date}</span>
+                                            <span class="message-data-name">${msg.user}</span>
+                                        </div>
+                                        <div class="message other-message float-right">${msg.contenu}</div>
+                                        ${msg.updated ? '<span class="badge badge-info">Updated</span>' : ''}
+                                        <button class="btn btn-sm btn-warning edit-message-btn" data-id="${msg.id}">Edit</button>
+                                    `;
+                                } else {
+                                    messageElement.innerHTML = `
+                                        <div class="message-data">
+                                            <span class="message-data-time">${msg.date}</span>
+                                            <span class="message-data-name">${msg.user}</span>
+                                        </div>
+                                        <div class="message my-message">${msg.contenu}</div>
+                                        ${msg.updated ? '<span class="badge badge-info">Updated</span>' : ''}
+                                        <button class="btn btn-sm btn-warning edit-message-btn" data-id="${msg.id}">Edit</button>
+                                    `;
+                                }
+
+                                messagesContainer.appendChild(messageElement);
+                            });
+
+                            // Add event listeners to edit buttons
+                            document.querySelectorAll('.edit-message-btn').forEach(button => {
+                                button.addEventListener('click', function () {
+                                    editingMessageId = this.getAttribute('data-id');
+                                    const messageContent = this.previousElementSibling.textContent;
+                                    document.getElementById('message-input').value = messageContent;
+                                });
+                            });
+                        } else {
+                            // Display a message if no messages are found
+                            const noMessagesElement = document.createElement('li');
+                            noMessagesElement.classList.add('clearfix');
+                            noMessagesElement.innerHTML = `
+                                <div class="message-data text-center">
+                                    <span class="message-data-time">No messages to display</span>
+                                </div>
+                            `;
+                            messagesContainer.appendChild(noMessagesElement);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching messages:', error);
+
+                        // Display an error message in the chat
+                        const messagesContainer = document.getElementById('chat-messages');
+                        messagesContainer.innerHTML = `
+                            <li class="clearfix">
+                                <div class="message-data text-center">
+                                    <span class="message-data-time">Error loading messages</span>
+                                </div>
+                            </li>
+                        `;
+                    });
+            });
+        });
+
+        // Send message
+        document.getElementById('send-message-btn').addEventListener('click', function () {
+            const messageInput = document.getElementById('message-input');
+            const messageContent = messageInput.value.trim();
+
+            if (messageContent && selectedRencontreId) {
+                const xhr = new XMLHttpRequest();
+                const url = editingMessageId ? `/message/edit/${editingMessageId}` : '/message/add';
+                xhr.open('POST', url, true); // Ensure the URL is correct
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+                xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+            try {
+                const data = JSON.parse(xhr.responseText);
+                console.log('Response from server:', data); // Debugging: Log the response
+                
+                if (data.success) {
+                    const messagesContainer = document.getElementById('chat-messages');
+                    const messageElement = document.createElement('li');
+                    messageElement.classList.add('clearfix');
+                    messageElement.innerHTML = `
+                        <div class="message-data text-right">
+                            <span class="message-data-time">${data.date}</span>
+                            <span class="message-data-name">${data.user}</span>
+                        </div>
+                        <div class="message other-message float-right">${data.contenu}</div>
+                        ${data.updated ? '<span class="badge badge-info">Updated</span>' : ''}
+                        <button class="btn btn-sm btn-warning edit-message-btn" data-id="${data.id}">Edit</button>
+                    `;
+                    messagesContainer.appendChild(messageElement);
+                    document.getElementById('message-input').value = ''; // Clear the input field
+
+                    // Add event listener to the new edit button
+                    messageElement.querySelector('.edit-message-btn').addEventListener('click', function () {
+                        editingMessageId = this.getAttribute('data-id');
+                        const messageContent = this.previousElementSibling.textContent;
+                        document.getElementById('message-input').value = messageContent;
+                    });
+
+                } else {
+                    console.error('Error sending message:', data.error);
+                    alert('Failed to send message: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error parsing JSON response:', error);
+                alert('Failed to process server response.');
+            }
+        } else {
+            console.error('Error sending message:', xhr.status, xhr.statusText);
+            alert(`Failed to send message. Status: ${xhr.status}, Status Text: ${xhr.statusText}`);
+        }
+    }
+};
+
+
+                const messageData = {
+                    contenu_message: messageContent,
+                    matching_id: selectedRencontreId,
+                    user_id: 1, // Assuming user ID 1 for testing
+                    updated_message: !!editingMessageId // Set updated_message to true if editing
+                };
+
+                console.log('Sending message:', messageData); // Debugging: Log the message data
+                xhr.send(JSON.stringify(messageData));
+                    editingMessageId = null; // Reset editing
+                } else {
+                alert('Please enter a message and select a rencontre.'); // Show validation error
+            }
+        });
+
+        // Save Matching
+        document.getElementById('saveMatchingBtn').addEventListener('click', function () {
+            const matchingName = document.getElementById('matchingName').value;
+            const matchingSubject = document.getElementById('matchingSubject').value;
+            const matchingNbrPersonne = document.getElementById('matchingNbrPersonne').value;
+            const matchingImage = document.getElementById('matchingImage').value;
+            const matchingNumTable = document.getElementById('matchingNumTable').value;
+
+            if (matchingName && matchingSubject && matchingNbrPersonne && matchingImage && matchingNumTable) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/matching/add', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            const data = JSON.parse(xhr.responseText);
+                            if (data.success) {
+                                // Add the new matching to the list
+                                const newMatching = document.createElement('li');
+                                newMatching.classList.add('clearfix', 'rencontre-item');
+                                newMatching.setAttribute('data-id', data.id);
+                                newMatching.innerHTML = `
+                                    <img src="${matchingImage}" alt="avatar">
+                                    <div class="about">
+                                        <div class="name">${matchingName}</div>
+                                        <div class="status">
+                                            <div class="subject">${matchingSubject}</div>
+                                        </div>
+                                    </div>
+                                `;
+                                document.querySelector('.chat-list').appendChild(newMatching);
+                                $('#addMatchingModal').modal('hide');
+                            } else {
+                                alert('Failed to add matching: ' + data.error);
+                            }
+                        } else {
+                            alert('Failed to add matching. Please try again.');
+                        }
+                    }
+                };
+
+                const matchingData = {
+                    name: matchingName,
+                    sujetRencontre: matchingSubject,
+                    nbrPersonneMatchy: matchingNbrPersonne,
+                    image: matchingImage,
+                    numTable: matchingNumTable,
+                };
+
+                xhr.send(JSON.stringify(matchingData));
+            } else {
+                alert('Please fill out all fields.');
+            }
+        });
+
+        // Update Matching
+     document.getElementById("editMatchingForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let formData = new FormData();
+    formData.append("name", document.getElementById("editName").value);
+    formData.append("sujetRencontre", document.getElementById("editSujet").value);
+    formData.append("numTable", document.getElementById("editNumTable").value);
+    formData.append("image", document.getElementById("editImage").files[0]);
+
+    // Automatically retrieve matchingId and userId
+    let matchingId = document.getElementById("matchingId").value;
+    let userId = document.getElementById("userId").value; 
+
+    fetch(`/matching/edit/${matchingId}`, {
+        method: "POST",
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Matching updated successfully!");
+            location.reload();
+        } else {
+            alert("Error: " + data.message);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+});
+
+    });
+    function openEditModal(matchingId) {
+    fetch(`/matching/edit/${matchingId}`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById("editModalContainer").innerHTML = html;
+            $('#editMatchingModal').modal('show');
+        });
+}
+    </script>
+</body>
+{% endblock %}
