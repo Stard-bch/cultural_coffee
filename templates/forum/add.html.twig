@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/forum.css') }}">
+{% endblock %}
+
+{% block body %}
+    <h1>Add a new post</h1>
+    <div class="form-container" style="color: black;">
+        {{ form_start(form, {'attr': {'class': 'form-container'}}) }}
+            <div class="form-group">
+                {{ form_label(form.description_post) }}
+                {{ form_widget(form.description_post, {'attr': {'class': 'form-control', 'placeholder': 'Enter your thoughts'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.image) }}
+                {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <button type="submit" class="btn btn-primary">Publier</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

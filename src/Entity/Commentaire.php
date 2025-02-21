@@ -23,10 +23,12 @@ class Commentaire
     #[ORM\Column(nullable: true)]
     private ?int $nbrLike_commentaire = null;
 
-   
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
     private ?Post $post = null;
-
+     
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private $user;
 
     public function getId(): ?int
     {
@@ -80,4 +82,21 @@ class Commentaire
 
         return $this;
     }
+     public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+ 
+    public function getNomUser(): ?string
+    {
+        return $this->nom_user;
+    }
+
 }

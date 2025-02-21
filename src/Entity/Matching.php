@@ -31,7 +31,7 @@ class Matching
          /**
      * @var Collection<int, Message>
      */
-    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'Matching')]
+    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'matching')]
     private Collection $messages;
 
 

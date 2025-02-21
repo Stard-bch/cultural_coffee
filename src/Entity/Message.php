@@ -15,9 +15,7 @@ class Message
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
     private ?Matching $matching = null;
-    
 
-   
     #[ORM\ManyToOne(inversedBy: 'messages')]
     private ?User $user = null;
 
@@ -56,7 +54,6 @@ class Message
         return $this;
     }
 
-    
     public function getMatching(): ?Matching
     {
         return $this->matching;

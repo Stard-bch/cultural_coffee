@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/forum.css') }}">
+{% endblock %}
+
+{% block body %}
+<body>
+    <section class="ftco-section">
+      <div class="container">
+        <div class="row justify-content-center mt-5">
+          <div class="col-md-8">
+            <div class="card">
+              <div class="card-body">+
+                <h2>{{ post.descriptionPost }}</h2>
+                <p><strong>Posté par:</strong> {{ post.nomUser }}</p>
+                <p><strong>Date:</strong> {{ post.datePost|date('d M Y, H:i') }}</p>
+                <img src="{{ asset('uploads/' ~ post.image) }}" alt="Image du post" style="width:100%; height:auto;">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center mt-5">
+          <div class="col-md-8">
+            <h3>Commentaires</h3>
+            <div class="comments">
+              {% for commentaire in post.commentaires %}
+              <div class="comment-box p-2 border rounded mt-2">
+                <strong>{{ commentaire.user.NomUser }}</strong>
+                <p>{{ commentaire.contenu }}</p>
+                <small class="text-muted">{{ commentaire.getDateCommentaire|date('d M Y, H:i') }}</small>
+                {% if commentaire.nomUser and commentaire.nomUser.id == 1 %}
+                    <div class="text-right mt-2">
+                        <a href="{{ path('forum_edit_comment', {'id': commentaire.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
+                        <form action="{{ path('forum_delete_comment', {'id': commentaire.id}) }}" method="POST" style="display:inline;">
+                            <input type="hidden" name="_method" value="POST">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer ce commentaire ?');">Supprimer</button>
+                        </form>
+                    </div>
+                {% endif %}
+              </div>
+              {% else %}
+              <p class="text-muted">Aucun commentaire pour le moment.</p>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+</body>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

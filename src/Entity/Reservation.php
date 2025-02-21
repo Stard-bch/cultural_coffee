@@ -14,10 +14,9 @@ class Reservation
     #[ORM\Column]
     private ?int $id = null;
 
- 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Evenement $evenement = null;
-
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_booking = null;

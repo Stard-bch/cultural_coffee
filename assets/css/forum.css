@@ -1,0 +1,54 @@
+body {
+    background-color: #f8f9fa; /* Changez la couleur de fond en gris clair */
+    color: black;
+}
+
+.form-container {
+    color: black;
+}
+
+.form-container input[type="text"],
+.form-container textarea,
+.form-container input[type="file"] {
+    color: black !important;
+    background-color: white !important;
+    caret-color: black !important; /* Ensure the cursor is visible */
+    border: 1px solid #ced4da; /* Add a border for better visibility */
+}
+
+.form-container input[type="text"]::placeholder,
+.form-container textarea::placeholder {
+    color: gray !important; /* Make the placeholder text gray */
+}
+
+.form-container .form-control {
+    color: black !important;
+    background-color: white !important;
+    caret-color: black !important; /* Ensure the cursor is visible */
+}
+
+.form-container input[type="text"]:focus,
+.form-container textarea:focus {
+    color: black !important;
+    background-color: white !important;
+    caret-color: black !important; /* Ensure the cursor is visible */
+    outline: 2px solid #78d5ef; /* Add an outline for better focus visibility */
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+
+.post-container .action-buttons .btn {
+    font-size: 0.9rem;
+    padding: 5px 10px;
+}
+

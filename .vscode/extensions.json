@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "jeremysemel.azurecodegpt"
+    ] 
+    "azurecodegpt.apiKey": "TA_CLE_API",
+  "azurecodegpt.endpoint": "TON_ENDPOINT",
+  "azurecodegpt.model": "TON_MODELE"
+}
