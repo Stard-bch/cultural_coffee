@@ -1,0 +1,88 @@
+{% block css %}
+     <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
+  <title>Dashtreme Admin - Free Dashboard for Bootstrap 4 by Codervent</title>
+  <!-- loader-->
+  <link href="{{ asset('assets/back/css/pace.min.css') }}" rel="stylesheet"/>
+  <script src="{{ asset('assets/back/js/pace.min.js') }}"></script>
+  <!--favicon-->
+  <link rel="icon" href="{{ asset('assets/back/images/favicon.ico') }}" type="image/x-icon">
+  <!-- Bootstrap core CSS-->
+  <link href="{{ asset('assets/back/css/bootstrap.min.css') }}" rel="stylesheet"/>
+  <!-- animate CSS-->
+  <link href="{{ asset('assets/back/css/animate.css') }}" rel="stylesheet" type="text/css"/>
+  <!-- Icons CSS-->
+  <link href="{{ asset('assets/back/css/icons.css') }}" rel="stylesheet" type="text/css"/>
+  <!-- Custom Style-->
+  <link href="{{ asset('assets/back/css/app-style.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+<body class="bg-theme bg-theme1">
+<div id="pageloader-overlay" class="visible incoming">
+    <div class="loader-wrapper-outer">
+        <div class="loader-wrapper-inner"><div class="loader"></div></div>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div class="card card-authentication1 mx-auto my-5">
+        <div class="card-body">
+            <div class="card-content p-2">
+                <div class="text-center">
+                    <img src="{{ asset('assets/back/images/logo-icon.png') }}" alt="logo icon">
+                </div>
+                <div class="card-title text-uppercase text-center py-3">Sign In</div>
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputUsername" class="sr-only">Username</label>
+                        <div class="position-relative has-icon-right">
+                            <input type="text" id="exampleInputUsername" class="form-control input-shadow" placeholder="Enter Username">
+                            <div class="form-control-position">
+                                <i class="icon-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword" class="sr-only">Password</label>
+                        <div class="position-relative has-icon-right">
+                            <input type="password" id="exampleInputPassword" class="form-control input-shadow" placeholder="Enter Password">
+                            <div class="form-control-position">
+                                <i class="icon-lock"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <div class="icheck-material-white">
+                                <input type="checkbox" id="user-checkbox" checked="" />
+                                <label for="user-checkbox">Remember me</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-6 text-right">
+                            <a href="reset-password.html">Reset Password</a>
+                        </div>
+                    </div>
+                    
+ <button type="submit" class="btn btn-light btn-block">Sign In</button>
+                 </form>
+            </div>
+        </div>
+        <div class="card-footer text-center py-3">
+<a href="{{ path('app_register') }}">Sign Up here</a>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{{ asset('assets/back/js/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/back/js/popper.min.js') }}"></script>
+<script src="{{ asset('assets/back/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('assets/back/js/sidebar-menu.js') }}"></script>
+<script src="{{ asset('assets/back/js/app-script.js') }}"></script>
+{% endblock %}
