@@ -10,26 +10,47 @@ class Message
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: "integer")]
     private ?int $id = null;
+
+    #[ORM\Column(type: "text")]
+    private ?string $content = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
     private ?Matching $matching = null;
-    
 
-   
     #[ORM\ManyToOne(inversedBy: 'messages')]
     private ?User $user = null;
 
     #[ORM\Column]
-    private ?bool $updated_message = null;
+    private ?bool $updated_message = false;
 
-    #[ORM\Column(length: 255)]
-    private ?string $contenu_message = null;
+
+
+    #[ORM\Column(type: "datetime")]
+    private ?\DateTimeInterface $createdAt = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime(); // Set the default timestamp
+    }
+
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(string $content): self
+    {
+        $this->content = $content;
+
+        return $this;
     }
 
     public function isUpdatedMessage(): ?bool
@@ -44,19 +65,8 @@ class Message
         return $this;
     }
 
-    public function getContenuMessage(): ?string
-    {
-        return $this->contenu_message;
-    }
 
-    public function setContenuMessage(string $contenu_message): static
-    {
-        $this->contenu_message = $contenu_message;
 
-        return $this;
-    }
-
-    
     public function getMatching(): ?Matching
     {
         return $this->matching;
@@ -78,6 +88,17 @@ class Message
     {
         $this->user = $user;
 
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
         return $this;
     }
 }

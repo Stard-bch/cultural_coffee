@@ -4,98 +4,169 @@ namespace App\Entity;
 
 use App\Repository\MatchingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: MatchingRepository::class)]
 class Matching
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    #[ORM\Column]
-    private ?int $num_table = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $name = ''; // ✅ Ensures property is initialized
 
-    #[ORM\Column(length: 255)]
-    private ?string $sujet_rencontre = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $sujetRencontre = ''; // ✅ Ensures property is initialized
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $feedback = null;
+    #[ORM\Column(type: 'integer')]
+    private int $numTable;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $rating = null;
+    #[ORM\Column(type: 'integer')]
+    private int $nbrPersonneMatchy;
 
-    #[ORM\Column]
-    private ?int $nbr_personneMatchy = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $image;
 
-         /**
-     * @var Collection<int, Message>
-     */
-    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'Matching')]
+    #[ORM\OneToMany(mappedBy: 'matching', targetEntity: Message::class)]
     private Collection $messages;
 
+    #[ORM\ManyToOne(inversedBy: 'matchings')]
+    private ?User $user = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'matchings')]
+    #[ORM\JoinTable(name: 'matching_user')]
+    private Collection $assessors;
+
+    public function __construct()
+    {
+        $this->messages = new ArrayCollection();
+        $this->assessors = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNumTable(): ?int
+    public function getName(): string
     {
-        return $this->num_table;
+        return $this->name;
     }
 
-    public function setNumTable(int $num_table): static
+    public function setName(string $name): self
     {
-        $this->num_table = $num_table;
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getSujetRencontre(): string
+    {
+        return $this->sujetRencontre;
+    }
+
+    public function setSujetRencontre(string $sujetRencontre): self
+    {
+        $this->sujetRencontre = $sujetRencontre;
+        return $this;
+    }
+
+    public function getNumTable(): int
+    {
+        return $this->numTable;
+    }
+
+    public function setNumTable(int $numTable): self
+    {
+        $this->numTable = $numTable;
+        return $this;
+    }
+
+    public function getNbrPersonneMatchy(): int
+    {
+        return $this->nbrPersonneMatchy;
+    }
+
+    public function setNbrPersonneMatchy(int $nbrPersonneMatchy): self
+    {
+        $this->nbrPersonneMatchy = $nbrPersonneMatchy;
+        return $this;
+    }
+
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setMatching($this);
+        }
 
         return $this;
     }
 
-    public function getSujetRencontre(): ?string
+    public function removeMessage(Message $message): self
     {
-        return $this->sujet_rencontre;
-    }
-
-    public function setSujetRencontre(string $sujet_rencontre): static
-    {
-        $this->sujet_rencontre = $sujet_rencontre;
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getMatching() === $this) {
+                $message->setMatching(null);
+            }
+        }
 
         return $this;
     }
 
-    public function getFeedback(): ?string
+    public function getUser(): ?User
     {
-        return $this->feedback;
+        return $this->user;
     }
 
-    public function setFeedback(?string $feedback): static
+    public function setUser(?User $user): self
     {
-        $this->feedback = $feedback;
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getAssessors(): Collection
+    {
+        return $this->assessors;
+    }
+
+    public function addAssessor(User $assessor): self
+    {
+        if (!$this->assessors->contains($assessor)) {
+            $this->assessors[] = $assessor;
+        }
 
         return $this;
     }
 
-    public function getRating(): ?int
+    public function removeAssessor(User $assessor): self
     {
-        return $this->rating;
-    }
-
-    public function setRating(?int $rating): static
-    {
-        $this->rating = $rating;
-
-        return $this;
-    }
-
-    public function getNbrPersonneMatchy(): ?int
-    {
-        return $this->nbr_personneMatchy;
-    }
-
-    public function setNbrPersonneMatchy(int $nbr_personneMatchy): static
-    {
-        $this->nbr_personneMatchy = $nbr_personneMatchy;
+        $this->assessors->removeElement($assessor);
 
         return $this;
     }

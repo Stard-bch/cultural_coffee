@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Matching{% endblock %}
+
+{% block body %}
+    <h1>Matching</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ matching.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ matching.name }}</td>
+            </tr>
+            <tr>
+                <th>Sujet Rencontre</th>
+                <td>{{ matching.sujetRencontre }}</td>
+            </tr>
+            <tr>
+                <th>Num Table</th>
+                <td>{{ matching.numTable }}</td>
+            </tr>
+            <tr>
+                <th>Nbr Personne Matchy</th>
+                <td>{{ matching.nbrPersonneMatchy }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td><img src="{{ asset('uploads/images/' ~ matching.image) }}" alt="{{ matching.name }}" width="100"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('matching_index') }}">back to list</a>
+
+    <a href="{{ path('matching_edit', {'id': matching.id}) }}">edit</a>
+
+    <form method="post" action="{{ path('matching_delete', {'id': matching.id}) }}" style="display:inline-block;">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ matching.id) }}">
+        <button class="btn btn-danger">delete</button>
+    </form>
+{% endblock %}

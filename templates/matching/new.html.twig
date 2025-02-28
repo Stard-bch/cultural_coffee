@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create New Matching{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/front/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/front/css/chat.css') }}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Create New Matching</h1>
+        {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.numTable) }}
+                {{ form_widget(form.numTable) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.nbrPersonneMatchy) }}
+                {{ form_widget(form.nbrPersonneMatchy) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.image) }}
+                {{ form_widget(form.image) }}
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
