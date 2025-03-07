@@ -2,38 +2,34 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('assets/front/css/chat.css') }}">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         /* Additional custom styles */
         .chat-history {
             height: 450px;
             overflow-y: auto;
             scroll-behavior: smooth;
-            background-color:rgb(108, 81, 62);
+            background-color:rgb(120, 103, 93);
             padding: 15px;
             border-radius: 8px;
         }
-
         .chat-message input {
             border-radius: 20px;
             padding: 12px;
             border: 1px solid #ccc;
         }
-
         .btn-primary {
             background-color: #007bff;
             border: none;
             border-radius: 20px;
             padding: 10px 15px;
         }
-
         .modal-content {
             background-color: #fff;
             color: #333;
             border-radius: 10px;
             padding: 20px;
         }
-
         /* Chat List */
         .chat-list li {
             padding: 12px;
@@ -41,18 +37,15 @@
             transition: background 0.3s;
             border-bottom: 1px solid #ddd;
         }
-
         .chat-list li:hover {
-            background: #f1f1f1;
+            background:rgb(199, 7, 7);
         }
-
         .chat-list img {
             width: 50px;
             height: 50px;
             border-radius: 50%;
             object-fit: cover;
         }
-
         .chat .message {
             background: #007bff;
             color: white;
@@ -61,74 +54,134 @@
             display: inline-block;
             max-width: 70%;
         }
-
         .message-data {
             font-size: 12px;
             color: #777;
         }
-
         .message-actions {
             margin-top: 5px;
             text-align: right;
         }
-
         .message-actions .btn {
             padding: 2px 6px;
             font-size: 12px;
             margin-left: 5px;
         }
+        /* Form label color */
+        .input-group-append{
+            color: black;
+        }
+        .form-group label {
+            color: black;
+        }
+        input, textarea {
+            color: black !important;
+            background-color: white !important;
+        }
+        .form-control {
+            color: black !important;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
+    {# Set active_matching to the first matching if not defined #}
+    {% if active_matching is not defined or active_matching is empty %}
+        {% set active_matching = matchings|first %}
+    {% endif %}
 <body>
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
             <a class="navbar-brand" href="home">Rendez-Vous<small>Culture</small></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a href="home" class="nav-link">Accueil</a></li>
+                    <li class="nav-item"><a href="home" class="nav-link">Acceuil</a></li>
                     <li class="nav-item"><a href="rencontre" class="nav-link">Rencontres</a></li>
                     <li class="nav-item"><a href="indexService" class="nav-link">Services</a></li>
                     <li class="nav-item"><a href="evenement" class="nav-link">Événements</a></li>
                     <li class="nav-item"><a href="forum" class="nav-link">Forum</a></li>
                     <li class="nav-item"><a href="produit" class="nav-link">Boutique</a></li>
                     <li class="nav-item"><a href="contact" class="nav-link">Contact</a></li>
+                    <li class="nav-item cart"><a href="cart" class="nav-link"><span class="icon icon-shopping_cart"></span><span class="bag d-flex justify-content-center align-items-center"><small>1</small></span></a></li>
                     <li class="nav-item"><a href="login" class="nav-link">Connexion</a></li>
                 </ul>
             </div>
         </div>
     </nav>
+    <!-- END nav -->
+
+    <li> </li>
 
     <!-- Chat Container -->
-    <div class="container">
+    <div class="container mt-4">
         <div class="row clearfix">
             <!-- Matching List -->
             <div class="col-lg-4 col-md-6 chat-app">
                 <div class="card people-list">
                     <div class="card-header">
                         <h4>Matchings</h4>
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='{{ path('three') }}'">Go to 3D Coffee</button>
                     </div>
+                    <form action="{{ path('search_service') }}" method="get">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="search" placeholder="Search services" aria-label="Search services" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#createMatchingModal">Add Matching</button>
+
                     <div class="card-body">
-                        <ul class="list-unstyled chat-list">
-                            {% for matching in matchings %}
-                                <li class="{% if matching.id == matching.id %}active{% endif %}">
-                                    <a href="{{ path('matching', {'id': matching.id}) }}">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Matching">
-                                        <div class="about">
-                                            <div class="name">Matching #{{ matching.id }}</div>
-                                        </div>
-                                    </a>
-                                </li>
-                            {% endfor %}
+                        <ul class="list-unstyled chat-list" id="matching-list">
+                            {% if matchings is defined and matchings %}
+                                {% for matching in matchings %}
+                                    {% if matching.user and matching.user.id == app.session.get('user').id or matching.assessors.contains(app.session.get('user')) %}
+                                    
+                                        <li class="{% if active_matching is defined and active_matching.id == matching.id %}active{% endif %}" >
+                                            <a href="javascript:void(0);">
+                                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Matching">
+                                                <div class="about">
+                                                    <div class="name">{{ matching.name }}</div>
+                                                    <div class="id"> #{{ matching.id }}</div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <li>No matchings found.</li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
             </div>
+
+            <script>
+                $(function() {
+                    $('#createMatchingModal').on('show.bs.modal', function (event) {
+                        var button = $(event.relatedTarget);
+                        var modal = $(this);
+                        modal.find('.modal-title').text('Create Matching');
+                    });
+
+                    $('#matching-list li').click(function(e) {
+                        e.preventDefault();
+                        var id = $(this).data('id');
+                        $.ajax({
+                            url: "{{ path('message_by_matching', {'id': 0}) }}/" + id,
+                            type: 'GET',
+                            success: function(data) {
+                                $('#chat-history').html(data);
+                            }
+                        });
+                    });
+                });
+            </script>
 
             <!-- Chat Box -->
             <div class="col-lg-8 col-md-6 chat">
@@ -136,12 +189,16 @@
                     <div class="card-header chat-header">
                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="User">
                         <div class="chat-about">
-                            <h6 class="m-b-0">{{ matching.name }}</h6> <!-- Name of the matching -->
-                            <small>{{ matching.sujetRencontre }}</small> <!-- Subject of the matching -->
+                            {% if active_matching is defined and active_matching %}
+                                <h6 class="m-b-0">{{ active_matching.name }}</h6>
+                                <small>{{ active_matching.sujetRencontre }}</small>
+                            {% else %}
+                                <h6 class="m-b-0">No Matching Selected</h6>
+                            {% endif %}
                         </div>
                         <div class="ml-auto">
                             <a href="javascript:void(0);" class="btn btn-outline-info" data-toggle="modal" data-target="#updateMatchingModal">
-                                <i class="fa fa-cogs"></i> <!-- Icon for updating matching -->
+                                <i class="fa fa-cogs"></i>
                             </a>
                         </div>
                     </div>
@@ -149,22 +206,22 @@
                     <div class="card-body chat-history">
                         <ul class="list-unstyled">
                             {% for message in messages %}
-                                {% if message.user.id == 1 %}
+                                {% if message.user and message.user.id == app.session.get('user').id %}
                                     <!-- User Message -->
-                                    <li class="clearfix message-actions">
-                                    
+                                    <li class="clearfix">
                                         <div class="message-data text-right">
-                                        
                                             <span class="message-data-time">
-                                            <a href="javascript:void(0);" class="btn btn-sm btn-outline-warning" data-toggle="modal" data-target="#editMessageModal{{ message.id }}">
-                                                    <i class="fa fa-edit"></i> <!-- Edit button -->
+                                                <a href="javascript:void(0);" class="btn btn-sm btn-outline-warning" data-toggle="modal" data-target="#editMessageModal{{ message.id }}">
+                                                    <i class="fa fa-edit"></i>
                                                 </a>
-                                                <a href="{{ path('message_delete', {'id': message.id}) }}" class="btn btn-sm btn-outline-danger">
-                                                    <i class="fa fa-trash"></i> <!-- Delete button -->
-                                                </a>
-                                            {{ message.createdAt|date('Y-m-d H:i:s') }}
-                      
-                                            </span> <!-- Full date -->
+                                                <form method="post" action="{{ path('message_delete', {'id': message.id}) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this message?');">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ message.id) }}">
+                                                    <button class="btn btn-sm btn-outline-danger">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                                {{ message.createdAt|date('Y-m-d H:i:s') }}
+                                            </span>
                                             <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="User">
                                         </div>
                                         <div class="message my-message float-right">
@@ -177,16 +234,20 @@
                                     <li class="clearfix">
                                         <div class="message-data">
                                             <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="User">
-                                            <span class="message-data-time">{{ message.createdAt|date('Y-m-d H:i:s') }}</span> <!-- Full date -->
+                                            <span class="message-data-time">{{ message.createdAt|date('Y-m-d H:i:s') }}
+                                              
+                                            </span>
                                         </div>
                                         <div class="message other-message">
                                             {{ message.content }}
-
+                                            
                                         </div>
                                     </li>
                                 {% endif %}
+                            {% endfor %}
 
-                                <!-- Edit Message Modal -->
+                            <!-- Edit Message Modal -->
+                            {% for message in messages %}
                                 <div class="modal fade" id="editMessageModal{{ message.id }}" tabindex="-1">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -211,19 +272,72 @@
                             {% endfor %}
                         </ul>
                     </div>
-
-                    <!-- Message Input Form -->
-                    <div class="card-footer chat-message">
-                        <form action="{{ path('message_new', {'matchingId': matching.id}) }}" method="POST">
-                            <div class="input-group">
-                                <input type="text" name="contenu" class="form-control" placeholder="Type your message..." required>
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-primary">Send</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+{% if active_matching is not null and active_matching is not empty and attribute(active_matching, 'id') is defined %}
+    <form method="post" action="{{ path('message_new', {'matchingId': active_matching.id}) }}" class="message-form">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            {% if form is defined and form %}
+                {{ form_widget(form.content, {
+                    'attr': {
+                        'class': 'form-control',
+                        'style': 'color: black; background-color: white;',
+                        'placeholder': 'Type your message...'
+                    }
+                }) }}
+                {{ form_rest(form) }}
+            {% endif %}
+            <div class="input-group-append">
+                <button type="button" class="btn btn-secondary" id="correct-message-btn">Correct</button>
+                <button type="submit" class="btn btn-primary" id="send-message-btn">Send</button>
+            </div>
+        </div>
+    </form>
+{% else %}
+    <div class="alert alert-info">Please select a valid matching to send messages.</div>
+{% endif %}
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Matching Modal -->
+    
+    <div class="modal fade" id="createMatchingModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Matching</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form method="post" action="{{ path('matching_create') }}">
+                    <div class="modal-body">
+                        {{ form_start(create_form) }}
+                        {{ form_errors(create_form) }}
+                        <div class="form-group">
+                            {{ form_label(create_form.name, 'Name') }}
+                            {{ form_widget(create_form.name, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(create_form.sujetRencontre, 'Sujet de la r ncontre') }}
+                            {{ form_widget(create_form.sujetRencontre, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(create_form.nbrPersonneMatchy, 'Nombre de personnes') }}
+                            {{ form_widget(create_form.nbrPersonneMatchy, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(create_form.numTable, 'Num ro de table') }}
+                            {{ form_widget(create_form.numTable, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(create_form.image, 'Image') }}
+                            {{ form_widget(create_form.image, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        {{ form_end(create_form) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -236,27 +350,74 @@
                     <h5 class="modal-title">Update Matching</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <form method="post" action="{{ path('matching_edit', {'id': matching.id}) }}">
+                {% if active_matching is defined and active_matching and update_form is defined and update_form %}
+                    <form method="post" action="{{ path('matching_edit', {'id': active_matching.id}) }}">
+                        <div class="modal-body">
+                            {{ form_start(update_form) }}
+                            <div class="form-group">
+                                {{ form_label(update_form.name, 'Name') }}
+                                {{ form_widget(update_form.name, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            {# ...rest of form fields... #}
+                            {{ form_end(update_form) }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" onclick="location.reload()">Update</button>
+                        </div>
+                    </form>
+                {% else %}
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" name="name" class="form-control" value="{{ matching.name }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Sujet</label>
-                            <input type="text" name="sujetRencontre" class="form-control" value="{{ matching.sujetRencontre }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Participants</label>
-                            <input type="number" name="nbrPersonneMatchy" class="form-control" value="{{ matching.nbrPersonneMatchy }}" required>
-                        </div>
+                        <p class="text-center">No matching selected or form not available.</p>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Update</button>
-                    </div>
-                </form>
+                {% endif %}
             </div>
         </div>
     </div>
-</body>
-{% endblock %}
+
+   
+</body> 
+
+{% endblock %} 
+
+{% block javascipt %} 
+    <script>
+        document.getElementById('correct-message-btn').addEventListener('click', function () {
+        // Get the text from the textarea
+        const textarea = document.getElementById('message-content');
+        const text = textarea.value;
+
+        if (!text) {
+            alert('Please enter some text to correct.');
+            return;
+        }
+
+        // Send the text to the backend for correction
+        fetch("{{ path('correct_message_new', {'id': active_matching.id}) }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token('correct_message_new') }}' // Include CSRF token
+            },
+            body: JSON.stringify({ text: text }) // Send the text in the request body
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.correctedText) {
+                // Update the textarea with the corrected text
+                textarea.value = data.correctedText;
+            } else {
+                alert('No corrections found.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while correcting the text.');
+        });
+    });
+    </script>
+{% endblock javascipt %}
